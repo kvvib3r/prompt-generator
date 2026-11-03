@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Генератор Идеальных Промптов | НейроПомощник</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-color: #f8fafc;
+            --accent-color: #6366f1;
+            --accent-hover: #4f46e5;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #fff;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin: 15px 0 5px;
+            font-weight: 600;
+            font-size: 14px;
+            color: #94a3b8;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            background-color: #0f172a;
+            color: #fff;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background 0.2s;
+        }
+
+        button:hover {
+            background-color: var(--accent-hover);
+        }
+
+        .result-box {
+            margin-top: 25px;
+            padding: 15px;
+            background: #0f172a;
+            border-left: 4px solid var(--accent-color);
+            border-radius: 4px;
+            display: none;
+        }
+
+        .result-text {
+            word-wrap: break-word;
+            white-space: pre-wrap;
+            font-style: italic;
+        }
+
+        .copy-btn {
+            background-color: #22c55e;
+            margin-top: 10px;
+        }
+        .copy-btn:hover {
+            background-color: #16a34a;
+        }
+
+        /* РЕКЛАМНЫЕ БЛОКИ ДЛЯ МОНЕТИЗАЦИИ */
+        .ad-banner {
+            max-width: 600px;
+            width: 100%;
+            background: #1e293b;
+            border: 2px dashed #475569;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            box-sizing: border-box;
+            color: #94a3b8;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>конструктoр промптов для нейросетей</h1>
+        
+        <label for="role">Кто нейросеть по роли?</label>
+        <select id="role">
+            <option value="экспертный копирайтер">Копирайтер / Писатель</option>
+            <option value="профессиональный программист">Программист (Senior Python/JS)</option>
+            <option value="опытный маркетолог">Маркетолог</option>
+            <option value="талантливый художник">Концепт-художник (для картинок)</option>
+        </select>
+
+        <label for="task">Что конкретно нужно сделать?</label>
+        <textarea id="task" rows="3" placeholder="Например: написать пост про кроссовки, написать код для калькулятора..."></textarea>
+
+        <label for="style">Стиль / Формат ответа</label>
+        <input type="text" id="style" placeholder="Например: простой язык, с юмором, строго по делу, в стиле киберпанк">
+
+        <button onclick="generatePrompt()">Сгенерировать идеальный запрос</button>
+
+        <div class="result-box" id="resultBox">
+            <label>Твой готовый промпт:</label>
+            <div class="result-text" id="promptResult"></div>
+            <button class="copy-btn" onclick="copyPrompt()">Скопировать запрос</button>
+        </div>
+    </div>
+
+    <!-- НИЖНИЙ РЕКЛАМНЫЙ БЛОК -->
+    <div class="ad-banner">
+        <p style="margin: 0 0 10px 0; font-size: 14px;">Понравился сервис? Поддержи проект:</p>
+        <!-- Ссылка на донаты (ЮMoney, чаевые) -->
+        <a href="https://yoomoney.ru/prepaid" style="color: #22c55e; text-decoration: none; font-weight: bold;">Донат автору (поддержать рублем)</a>
+    </div>
+
+    <script>
+        function generatePrompt() {
+            const role = document.getElementById('role').value;
+            const task = document.getElementById('task').value.trim();
+            const style = document.getElementById('style').value.trim();
+
+            if (!task) {
+                alert('Пожалуйста, введите задачу!');
+                return;
+            }
+
+            let finalPrompt = `Действуй как ${role}. Твоя задача: ${task}. `;
+            if (style) {
+                finalPrompt += `Ответ оформи в следующем стиле: ${style}. `;
+            }
+            finalPrompt += `Выполни задачу максимально качественно, шаг за шагом.`;
+
+            document.getElementById('promptResult').innerText = finalPrompt;
+            document.getElementById('resultBox').style.display = 'block';
+        }
+
+        function copyPrompt() {
+            const text = document.getElementById('promptResult').innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Промпт скопирован в буфер обмена!');
+            });
+        }
+    </script>
+</body>
+</html>
